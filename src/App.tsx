@@ -107,9 +107,11 @@ export default function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-8 -mt-4 relative z-10">
         {previewMode ? (
-          <div className="flex justify-center">
-            <div ref={targetRef} className="w-[210mm] min-h-[297mm] bg-white shadow-xl rounded-lg overflow-hidden print:shadow-none">
-              <ResumePDF data={data} />
+          <div className="overflow-x-auto">
+            <div className="min-w-[1024px] flex justify-center pb-8">
+              <div ref={targetRef} className="w-[210mm] min-h-[297mm] bg-white shadow-xl rounded-lg overflow-hidden print:shadow-none">
+                <ResumePDF data={data} />
+              </div>
             </div>
           </div>
         ) : (
