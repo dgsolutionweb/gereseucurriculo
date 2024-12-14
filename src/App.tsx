@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Download } from 'lucide-react';
-import { usePDF } from 'react-to-pdf';
+import html2pdf from 'html2pdf.js';
 import ResumeForm from './components/ResumeForm';
 import ResumePDF from './components/ResumePDF';
 import { ResumeData } from './types/Resume';
@@ -45,14 +45,7 @@ export default function App() {
   const [data, setData] = useState<ResumeData>(initialData);
   const [previewMode, setPreviewMode] = useState(false);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
-  const { toPDF, targetRef } = usePDF({
-    filename: `curriculo-${data.personalInfo.fullName.toLowerCase().replace(/\s+/g, '-') || 'sem-nome'}.pdf`,
-    method: 'save',
-    page: {
-      margin: 0,
-      format: [210, 297]
-    }
-  });
+  const pdfRef = useRef<HTMLDivElement>(null);
 
   const handleWhatsAppClick = (message: string) => {
     const encodedMessage = encodeURIComponent(message);
@@ -62,7 +55,29 @@ export default function App() {
 
   const handleDownloadPDF = async () => {
     try {
-      await toPDF();
+      if (!pdfRef.current) return;
+
+      const element = pdfRef.current;
+      const opt = {
+        margin: 0,
+        filename: `curriculo-${data.personalInfo.fullName.toLowerCase().replace(/\s+/g, '-') || 'sem-nome'}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 4,
+          useCORS: true,
+          logging: true,
+          letterRendering: true,
+          allowTaint: true
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait',
+          compress: true
+        }
+      };
+
+      await html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error('Erro ao gerar PDF:', error);
       alert('Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.');
@@ -119,7 +134,7 @@ export default function App() {
           <div className="overflow-x-auto">
             <div className="min-w-[1024px] flex justify-center pb-8">
               <div 
-                ref={targetRef} 
+                ref={pdfRef}
                 className="w-[210mm] min-h-[297mm] bg-white shadow-xl rounded-lg overflow-hidden"
               >
                 <ResumePDF data={data} />
