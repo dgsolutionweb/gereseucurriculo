@@ -50,12 +50,7 @@ export default function App() {
     method: 'save',
     page: {
       margin: 0,
-      format: [210, 297],
-      orientation: 'portrait'
-    },
-    canvas: {
-      mimeType: 'image/png',
-      qualityRatio: 1
+      format: [210, 297]
     }
   });
 
@@ -65,9 +60,9 @@ export default function App() {
     setShowWhatsAppModal(false);
   };
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     try {
-      toPDF();
+      await toPDF();
     } catch (error) {
       console.error('Erro ao gerar PDF:', error);
       alert('Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.');
@@ -125,8 +120,7 @@ export default function App() {
             <div className="min-w-[1024px] flex justify-center pb-8">
               <div 
                 ref={targetRef} 
-                className="w-[210mm] min-h-[297mm] bg-white shadow-xl rounded-lg overflow-hidden print:shadow-none"
-                style={{ transform: 'scale(1)', transformOrigin: 'top center' }}
+                className="w-[210mm] min-h-[297mm] bg-white shadow-xl rounded-lg overflow-hidden"
               >
                 <ResumePDF data={data} />
               </div>
