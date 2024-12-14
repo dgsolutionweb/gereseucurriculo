@@ -132,7 +132,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-8 -mt-4 relative z-10">
         {previewMode ? (
           <div className="overflow-x-auto">
-            <div className="min-w-[1024px] flex justify-center pb-8">
+            <div className="min-w-[210mm] flex justify-center pb-8">
               <div 
                 ref={pdfRef}
                 className="w-[210mm] min-h-[297mm] bg-white shadow-xl rounded-lg overflow-hidden"
