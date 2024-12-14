@@ -20,6 +20,8 @@ export default function ResumePDF({ data }: ResumePDFProps) {
                   src={data.personalInfo.photo}
                   alt={data.personalInfo.fullName}
                   className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover relative"
+                  crossOrigin="anonymous"
+                  loading="eager"
                 />
               </div>
             )}
