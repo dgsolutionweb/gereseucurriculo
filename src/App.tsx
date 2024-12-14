@@ -161,6 +161,16 @@ export default function App() {
                   DGSolution <span className="text-yellow-400">WEB</span>
                 </h2>
               </div>
+              
+              <div className="max-w-2xl mx-auto text-center mb-8">
+                <p className="text-gray-300 text-sm md:text-base mb-4">
+                  Esse é um gerador de currículos gratuito para o público. Desejo toda sorte do mundo para você conseguir seu novo emprego! 🍀✨
+                </p>
+                <p className="text-gray-300 text-sm md:text-base">
+                  Se foi útil, nos siga no Instagram, ficarei muito feliz! <span className="text-yellow-400">❤️</span>
+                </p>
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                 <a
                   href="https://instagram.com/dgsolutionweb"
