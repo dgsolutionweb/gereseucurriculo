@@ -47,8 +47,11 @@ export default function App() {
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const { toPDF, targetRef } = usePDF({
     filename: `curriculo-${data.personalInfo.fullName.toLowerCase().replace(/\s+/g, '-')}.pdf`,
-    format: 'a4',
-    page: { margin: 0 }
+    page: {
+      margin: 0,
+      format: [210, 297],
+      orientation: 'portrait'
+    }
   });
 
   const handleWhatsAppClick = (message: string) => {
@@ -104,8 +107,10 @@ export default function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-8 -mt-4 relative z-10">
         {previewMode ? (
-          <div ref={targetRef} className="bg-white shadow-xl rounded-lg overflow-hidden max-w-full mx-auto">
-            <ResumePDF data={data} />
+          <div className="flex justify-center">
+            <div ref={targetRef} className="w-[210mm] min-h-[297mm] bg-white shadow-xl rounded-lg overflow-hidden print:shadow-none">
+              <ResumePDF data={data} />
+            </div>
           </div>
         ) : (
           <div className="bg-white shadow-xl rounded-lg p-4 sm:p-6">
