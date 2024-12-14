@@ -46,11 +46,16 @@ export default function App() {
   const [previewMode, setPreviewMode] = useState(false);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const { toPDF, targetRef } = usePDF({
-    filename: `curriculo-${data.personalInfo.fullName.toLowerCase().replace(/\s+/g, '-')}.pdf`,
+    filename: `curriculo-${data.personalInfo.fullName.toLowerCase().replace(/\s+/g, '-') || 'sem-nome'}.pdf`,
+    method: 'save',
     page: {
       margin: 0,
       format: [210, 297],
       orientation: 'portrait'
+    },
+    canvas: {
+      mimeType: 'image/png',
+      qualityRatio: 1
     }
   });
 
@@ -58,6 +63,15 @@ export default function App() {
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/17999754390?text=${encodedMessage}`, '_blank');
     setShowWhatsAppModal(false);
+  };
+
+  const handleDownloadPDF = () => {
+    try {
+      toPDF();
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+      alert('Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.');
+    }
   };
 
   return (
@@ -86,7 +100,7 @@ export default function App() {
               </button>
               {previewMode && (
                 <button
-                  onClick={() => toPDF()}
+                  onClick={handleDownloadPDF}
                   className="w-full sm:w-auto px-4 py-2 bg-yellow-500 text-gray-900 rounded-lg hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center gap-2 font-medium"
                   title="Baixar currículo em PDF"
                 >
@@ -109,7 +123,11 @@ export default function App() {
         {previewMode ? (
           <div className="overflow-x-auto">
             <div className="min-w-[1024px] flex justify-center pb-8">
-              <div ref={targetRef} className="w-[210mm] min-h-[297mm] bg-white shadow-xl rounded-lg overflow-hidden print:shadow-none">
+              <div 
+                ref={targetRef} 
+                className="w-[210mm] min-h-[297mm] bg-white shadow-xl rounded-lg overflow-hidden print:shadow-none"
+                style={{ transform: 'scale(1)', transformOrigin: 'top center' }}
+              >
                 <ResumePDF data={data} />
               </div>
             </div>
